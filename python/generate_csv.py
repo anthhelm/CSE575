@@ -1,7 +1,7 @@
 #!/usr/local/bin/python
 
 # set up file names and file handlers, write headers to output csv
-file_name = 'Movies_And_TV'
+file_name = 'Amazon_Instant_Video'
 
 f_in  = file_name + '.txt'
 f_out = file_name + '.csv'
