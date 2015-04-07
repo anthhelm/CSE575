@@ -1,11 +1,13 @@
 #!/usr/local/bin/python
 
 # set up file names and file handlers, write headers to output csv
-file_name = 'Movies_And_TV'
+file_name_ouput = 'Movies_And_TV'
+file_name_input = 'Amazon_Instant_Video'
 
-f_in  = file_name + '.txt'
-f_out = file_name + '.csv'
-fout = open(f_out,'w')
+
+f_in  = file_name_input + '.txt'
+f_out = file_name_ouput+ '.csv'
+fout = open(f_out,'a')
 
 
 j = 1
@@ -57,5 +59,5 @@ with open(f_in,'r') as f:
 
 
 
-fout.close() 
+fout.close()
 print("done.")
