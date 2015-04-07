@@ -1,8 +1,12 @@
 #!/usr/local/bin/python
 
 # set up file names and file handlers, write headers to output csv
+<<<<<<< HEAD
 file_name_ouput = 'Movies_And_TV'
 file_name_input = 'Amazon_Instant_Video'
+=======
+file_name = 'Amazon_Instant_Video'
+>>>>>>> 8c6bb0870f4204c8d91ac2a651ecf0a75063af54
 
 
 f_in  = file_name_input + '.txt'
@@ -59,5 +63,9 @@ with open(f_in,'r') as f:
 
 
 
+<<<<<<< HEAD
 fout.close()
+=======
+fout.close() 
+>>>>>>> 8c6bb0870f4204c8d91ac2a651ecf0a75063af54
 print("done.")
