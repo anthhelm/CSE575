@@ -58,6 +58,9 @@ with open(f_in,'r') as f:
 
 
 
-
+<<<<<<< HEAD
 fout.close()
+=======
+fout.close() 
+>>>>>>> 8c6bb0870f4204c8d91ac2a651ecf0a75063af54
 print("done.")
