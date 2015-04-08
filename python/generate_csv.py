@@ -2,7 +2,7 @@
 import csv
 
 # set up file names and file handlers, write headers to output csv
-file_name_ouput = 'Movies_And_TV'
+file_name_ouput = 'Amazon_Instant_Video'
 file_name_input = 'Amazon_Instant_Video'
 
 f_in  = file_name_input + '.txt'
@@ -60,14 +60,14 @@ with open(f_in,'r') as f:
 #Generate Dictionaries
 
 #{item_name:item_int}
-items_writer = csv.writer(open('items.csv', 'wb'))
+items_writer = csv.writer(open('items_int.csv', 'wb'))
 for key, value in item_d.items():
-   items_writer.writerow([value, key])
+   items_writer.writerow([key,value])
 
 #{user_name:user_int}
 users_writer = csv.writer(open('users_int.csv', 'wb'))
 for key, value in user_d.items():
-   users_writer.writerow([value, key])
+   users_writer.writerow([key,value])
 
 fout.close()
 print("done.")
