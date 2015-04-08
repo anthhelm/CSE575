@@ -1,4 +1,5 @@
 #!/usr/local/bin/python
+import csv
 
 # set up file names and file handlers, write headers to output csv
 file_name_ouput = 'Movies_And_TV'
@@ -56,8 +57,17 @@ with open(f_in,'r') as f:
             fout.write(str(user) + ',' + str(item) + ',' + score + '\n')
         j = j + 1
 
+#Generate Dictionaries
 
+#{item_name:item_int}
+items_writer = csv.writer(open('items.csv', 'wb'))
+for key, value in item_d.items():
+   items_writer.writerow([value, key])
 
+#{user_name:user_int}
+users_writer = csv.writer(open('users_int.csv', 'wb'))
+for key, value in user_d.items():
+   users_writer.writerow([value, key])
 
 fout.close()
 print("done.")
