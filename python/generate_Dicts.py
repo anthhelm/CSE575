@@ -7,8 +7,8 @@ file_name_input = 'Amazon_Instant_Video'
 
 f_in  = file_name_input + '.txt'
 
-movie_d = {'unknown': -1}
-user_d = {'unknown': -1}
+movie_d = {}
+user_d = {}
 
 j=1
 
@@ -40,14 +40,16 @@ with open(f_in,'r') as f:
             if profilename not in user_d:
                 user_d[profilename]=user   
 	j = j+1
-
-items_writer = csv.writer(open('movies.csv', 'wb'))
+ 
+items_writer = csv.writer(open('movies_names.csv', 'wb'))
 for key, value in movie_d.items():
-   items_writer.writerow([value, key])
+   if key is not 'unknown' and value is not 'unknown':
+       items_writer.writerow([value, key])
 
 users_writer = csv.writer(open('users_names.csv', 'wb'))
 for key, value in user_d.items():
-   users_writer.writerow([value, key])
+   if key is not 'unknown' and value is not 'unknown':
+       users_writer.writerow([value, key])
 
            
 #fout.close()
