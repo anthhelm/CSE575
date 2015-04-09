@@ -3,8 +3,8 @@ import csv
 
 # set up file names and file handlers, write headers to output csv
 #file_name_ouput = 'Movies_And_TV'
-file_name_input = 'Amazon_Instant_Video'
 
+file_name_input = 'Amazon_Instant_Video'
 f_in  = file_name_input + '.txt'
 
 movie_d = {}
@@ -41,12 +41,12 @@ with open(f_in,'r') as f:
                 user_d[profilename]=user   
 	j = j+1
  
-items_writer = csv.writer(open('movies_names.csv', 'wb'))
+items_writer = csv.writer(open('movie_names.csv', 'wb'))
 for key, value in movie_d.items():
    if key is not 'unknown' and value is not 'unknown':
        items_writer.writerow([value, key])
 
-users_writer = csv.writer(open('users_names.csv', 'wb'))
+users_writer = csv.writer(open('user_names.csv', 'wb'))
 for key, value in user_d.items():
    if key is not 'unknown' and value is not 'unknown':
        users_writer.writerow([value, key])
