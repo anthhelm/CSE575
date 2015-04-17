@@ -260,7 +260,7 @@ $(1.2 * Review Summary Score  + Review Score ) /2.2 $
 
 \section{Results}
 We split the dataset into 6 folds and we run 5-fold cross validation on the dataset.We obtained optimal values for the parameters rank,Iterations and regularization parameter $\lambda$.We performed 5-fold cross validation with rank being [10,20,40,60,80],iteration vector being [5,10,15,20] and $\lambda$ vector being [10.0,1.0,0.1,0.01,0.001].We performed 5-fold cross validation for various combination of rank,iteration and regularization parameter  $\lambda$.*Figure*  shows the variation of Mean Squared Error(MSE)(testing and training) with $\lambda$.*Figure* shows the variation of MSR with rank and *Figure* shows the variation of MSE with iterations.We achieved best testing error of 0.962879 for a rank,iterations and regularization parameter of  80,20 and 0.15 respectively.
-Moreover,we obtained a testing MSE of 1.02 after rounding the predictions of base recommender.
+**Reasons to round the predictions** .After rounding the predictions,we obtained a MSE of 1.02 for the base recommender.
 
 \section{Future work}
 For the future,we can use a better Algorithm to do the NLP on the review text.Most of the users in the Amazon Instant Video Dataset that
@@ -269,8 +269,8 @@ a better insight into the review if we use dataset like Electronics where we hav
 
 
 \section{Conclusions}
-
---Insert conclusions here-- 
+ 
+ 
 
 %\section{References}
 
