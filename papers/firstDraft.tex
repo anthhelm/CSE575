@@ -1,7 +1,11 @@
 \documentclass{article} % For LaTeX2e
 \usepackage{nips14submit_e,times}
 \usepackage{hyperref}
-\usepackage{url}
+\usepackage{url, amsmath, booktabs}
+\usepackage{amsmath,amsfonts,amssymb}
+\usepackage{float}
+\usepackage{wrapfig}
+\restylefloat{table}
 
 \usepackage{geometry}                		% See geometry.pdf to learn the layout options. There are lots.
 \geometry{letterpaper}                   		% ... or a4paper or a5paper or ... 
@@ -10,7 +14,7 @@
 \usepackage{graphicx}				% Use pdf, png, jpg, or eps§ with pdflatex; use eps in DVI mode
 								% TeX will automatically convert eps --> pdf in pdflatex	
 								
-
+\DeclareMathOperator*{\argmin}{arg\,min}
 %\usepackage{amssymb}
 
 \title{Amazon Product Recommendations Using Collaborative Filtering and Natural Language Processing  }
@@ -86,8 +90,138 @@ The suggested movies are determined by highly rated products as rated by similar
 
 
 \section{Methodology}
+\subsection{Dataset}
+The Dataset consists reviews for movies and television shows available on the Amazon Instant Video service. The data is publically available at \url{https://snap.stanford.edu/data/web-Amazon.html}. The Amazon-Instant-Video is 252 MB and consists of 717,651 reviews across 312929 unique users and 22190 unique movies. A typical entry is shown below. 
 
-\subsection{Base Recommender System}
+\begin{verbatim}
+product/productId: B002BNZ2XE
+product/title: Amazon.com: Moving Target (1988): Jason Bateman, John Glover, 
+Jack Wagner, Chynna Phillips: Amazon Instant Video
+product/price: 0.00
+review/userId: AZVY9Y3A0YU1I
+review/profileName: Willard R. Stephen
+review/helpfulness: 1/1
+review/score: 4.0
+review/time: 1277424000
+review/summary: Moving Target
+review/text: I found this to be an intrieging suspense thriller with a 
+minimum of violence and a happy ending. This is a rare combination in 
+recent releases. I found it well excepted and enjoyed by teen age 
+audiences.
+\end{verbatim}
+
+The features of interest in the recommender system will be productId, userId, score, and review text.  The score, or rating, of a review is an integer value between 1 and 5 inclusive. The review text consists of natural language text of variable length.
+
+\subsection{Preliminary Neighborhood Methods}
+Our initial goal was to establish a baseline recommender system without incoporating a natural language processing component. To that end, we first explored neighborhood based collaborative filtering determined by user similarity. Using a smaller, more manageable subset of the the Amazon Instant Video dataset we compuated the similarity between each pair of users. To calculate the similarity between users $u$ and $v$, we first take the intersection of all movies rated by both $u$ and $v$ and create ratings vectors $r_u$ and $r_v$ whose elements consist of the explicit ratings by each user, for each movie in the shared intersection. Similarity between users was then calculated by computing the Pearson correlation coefficient between users. 
+
+After all pairwise similarity measures between users were calculated, recommendations for user $u$ could be found by selecting the $k$ most similar users. The predicted rating for a particular movie $i$, previously unrated by user $u$ is then calculated by a weighted combination of the $k$ most similar users' rating of movie $i$.
+
+As the full Amazon Instant Video Set consisted of approximately 60,000 unique users, computing the similarity matrix would require over 2 billion function calls to compute the Pearson correlation coefficient. Procedures to parallelize these calcuations were infeasible, and we explored other options such as matrix mactorization methods. 
+
+\subsection{Matrix Factorization Methods}
+Matrix factorization methods offer many advatanges over neighborhood methods, including speed, paralellization, accuracy, and explanatory power. To build a recommender system based on matrix factorization, we transormed a flat list of movie ratings seen in the table on the left, below, into an $m \times n$ matrix depicted below on the right.
+
+% \begin{wraptable}{r}{5.5cm}
+% \begin{table}[H]
+
+\begin{center}
+\begin{tabular}{l c c} 
+\toprule 
+UserId & MovieId & Rating \\ 
+\midrule % In-table horizontal line
+1 & 1 & 5 \\ 
+1 & 4 & 2 \\ 
+2 & 1 & 4 \\ 
+2 & 2 & 3 \\ 
+3 & 5 & 1 \\ 
+4 & 2 & 1 \\ 
+4 & 5 & 4 \\
+\vdots  & \vdots & \vdots \\ 
+\bottomrule % Bottom horizontal line
+\end{tabular}
+\quad \quad \quad
+% \caption{User-Movie Ratings List} 
+% \end{table}
+% \end{wraptable}
+% \begin{table}[H]
+% \begin{center}
+\begin{tabular}{c c c c c c c} 
+\toprule 
+& \multicolumn{5}{c}{MovieId} \\ 
+% \cmidrule(l){2-6} 
+UserId & 1 & 2 & 3 & 4 & 5 & \dots \\ 
+\midrule 
+1 & 5 & 0 & 0 & 2 & 0 & \dots\\ 
+2 & 4 & 3 & 0 & 0 & 0 & \dots\\ 
+3 & 0 & 0 & 0 & 0 & 1 & \dots\\ 
+4 & 0 & 1 & 0 & 0 & 4 & \dots\\ 
+5 & 5 & 4 & 0 & 0 & 3 & \dots\\ 
+6 & 0 & 3 & 2 & 3 & 0 & \dots\\ 
+\vdots & \vdots & \vdots  & \vdots  & \vdots & \vdots & $\ddots$ \\ 
+\bottomrule 
+\end{tabular}
+\end{center}
+% \caption{User-Movie Ratings Matrix} 
+% \end{table}
+
+The movie rating matrix, $R \in \mathbb{R}^{m \times n}$ has rows corresponding to users, columns correpsonding to movies, where elements $r_{ui}$ of give the value on a 1-5 scale given by user $u$ to movie $i$. This matrix is extremely incomplete, and provides the rationale for constructing a recommender system in the first place. All ratings for which we have no data are given a value of 0, resulting in an extremely sparse matrix. 
+
+The goal of a matrix factorization recommender is to discover the matrices $P \in \mathbb{R}^{m \times k}$ and $Q \in \mathbb{R}^{k \times n}$ such that $R \approx PQ$. That is, we wish to minimize the norm difference between the known rating $r_{ui}$ and the predicted rating $\hat r_{ui}$ where the predicted rating is given by $\hat r_{ui} = q_i^\intercal p_u$ with $q_i$ and $p_u$ the $i$th column and $u$th row of $Q$ and $P$ respectively. The parameter $k$ determines the effective rank of the matrix factors with $k \ll m,n$. The value of $k$ determines the dimension of the lower dimensional subspace of latent features both in user space and item space that best retains the interactions between users and items. The vector $p_u \in \mathbb{R}^{1 \times k}$ measures the extent to which user $u$ possesses the $k$ latent user features, while the vector $q_i \in \mathbb{R}^{k \times 1}$ measures the extent to which item $i$ possesses the $k$ latent item features. The interaction between these two vectors, and the predicted rating $\hat r_{ui}$ is given by the inner product of the two feature vectors. The factorization is presented visually below:
+
+\[
+  \stackrel{\stackrel{\mbox{rating}}{\mbox{matrix}}}{%
+    \begin{bmatrix}
+    r_{11} & r_{12} & \cdots & r_{1N} \\
+    r_{21} & r_{22} & \cdots & r_{2N} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    r_{M1} & r_{M2} & \cdots & r_{MN}
+    \end{bmatrix}%
+  }\ = 
+  \stackrel{\stackrel{\mbox{user}}{\mbox{features}}}{%
+    \begin{bmatrix}
+    p_{11} & p_{12} & \cdots & p_{1K} \\
+    p_{21} & p_{22} & \cdots & p_{2K} \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \vdots & \vdots & \ddots & \vdots \\
+    \vdots & \vdots & \ddots & \vdots \\
+    p_{M1} & p_{M2} & \cdots & p_{MK}
+    \end{bmatrix}%
+  }\ \quad
+  \stackrel{\stackrel{\mbox{item}}{\mbox{features}}}{%
+    \begin{bmatrix}
+    q_{11} & q_{12} & \cdots & \cdots & \cdots & q_{1N} \\
+    q_{21} & q_{22} & \cdots & \cdots & \cdots & q_{2N} \\
+    \vdots & \vdots & \ddots & \cdots & \cdots & \vdots \\
+    q_{M1} & q_{K2} & \cdots & \cdots & \cdots & q_{KN}
+    \end{bmatrix}%
+   }
+\]
+We wish to minimize the squared difference between observed ratings and predicted ratings. Let $\kappa$ be the set of ordered pairs $(u,i)$ for which we have observed ratings between user $u$ and item $i$. To avoid overfitting the training data, we introduce a regularization parameter $\lambda$ to balance the norm size of the factorization vectors $p$ and $q$ against the square of the ratings residuals. $P$ and $Q$ then solve regularized least squares formulation:
+
+\begin{equation}
+    (Q, P) = \argmin_{q, p} \sum_{i,u \in \kappa} (r_{ui}-q_i^\intercal p_u)^2 + \lambda( \|q\|^2 + \|p\|^2)
+\end{equation}
+
+As both $p_u$ and $q_i$  are unknown there is no closed form solution that minimizes the above functional. To compute the desired factorization we use an Alternating Least Squares approach. In the iterative ALS approach we fix $p_u$ and minimize the objective function with respect to the $q_i$. Then we fix $q_i$ and minimize the objective funcion with respect to $p_u$, alternating as we proceed. We are then minimizing the pair of equations, each with respect to one variable: 
+\[ J(p_u) = (r_u - p_u Q) W_u (r_u - p_u Q)^T + \lambda p_u p_u^T \] 
+\[ J(q_i) = (r_i - P q_i) W_i (r_i - P q_i)^T + \lambda q_i q_i^T \]
+with the binary diagonal weighting matrices $W_u$ and $W_i$ 
+\[
+   w_{ui} = \left\{
+     \begin{array}{lll}
+       1 &: &\text{user } u \text{ rated movie } i \\
+       0 &: &\text{else}
+     \end{array}
+   \right.
+\]
+The original minimization problem is over the sum of $(u,i) \in \kappa$, but with the above weighting matrices, the alternating least squares solution can be found over all $(u,i)$. The minimization of the above equations has closed formed solutions
+\[ p_u = (Q .^* W_u Q^T + \lambda I)^{-1} Q W_u r_u \] 
+\[ q_i = (P^T .^* W_i P + \lambda I)^{-1} P^T W_i r_i \] 
+
+To procced with ALS, we assign $p_u$ a random initial value, and used the closed form solution to the regularized least squares problem in one variable, to calculate $q_i$. With $q_i$ fixed, we now compute the updated $p_u$ and continue alternating between the two unknowns until convergence or a maximum number of iterations has been achieved. 
+
 
 \subsection{Natural Language Processing}
 
