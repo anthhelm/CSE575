@@ -1,8 +1,30 @@
 \begin{thebibliography}{1}
 
-\bibitem{Birdetal2001}
+\bibitem{WBKNN2013}
+Chuunhong~Zhang. Bin~Wang, Qing~Liao.
+\newblock Weight based knn recommender system., 2013.
+
+\bibitem{StanfordPaper}
 R.~B. Bird, E.~A. Smith, and D.~W. Bird.
 \newblock The hunting handicap: costly signaling in human foraging strategies.
 \newblock {\em Behavioral Ecology and Sociobiology}, 50:9--19, 2001.
+
+\bibitem{RCHB2010}
+A.~Tuzhilin. G.~Adomavicius.
+\newblock Recommender systems handbook., 2010.
+
+\bibitem{AUIRM}
+M.~Reinders. J.~Wang, A.~Vries.
+\newblock A user-item relevance model for log-based collaborative filtering.
+
+\bibitem{ATTPaper2009}
+Chris~Kolinsky. Yehudi~Koren, Robert~Bell.
+\newblock Techniques for recommender systems.
+\newblock {\em ATT}, page~2, 2009.
+
+\bibitem{TextBlob}
+Chris~Kolinsky. Yehudi~Koren, Robert~Bell.
+\newblock Techniques for recommender systems.
+\newblock {\em BTS}, 1:2, 2009.
 
 \end{thebibliography}

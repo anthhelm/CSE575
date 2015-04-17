@@ -39,23 +39,22 @@ Anirudh Som \\
 \maketitle
 
 \begin{abstract}
-In this project we will implement a Recommender System to provide suggestions based on Amazon user reviews across Amazon Instant Video, Music, and Book product categories. The Recommender System will be implemented using collaborative filtering based on product ratings. To increase recommendation accuracy, we will also perform natural language processing on user written reviews to better inform the recommender system of user preferences. We will assess the accuracy of the Recommender System with and without additional textual information containted in user reviews, and evaluate the sensitivity of our Recommender System by varying the number of reviews by user, and number of reviews per product. 
+In this project we will implement a Recommender System to provide suggestions based on Amazon user reviews across Amazon Instant Video, Music, and Book product categories. The Recommender System will be implemented using collaborative filtering based on product ratings. To increase recommendation accuracy, we will also perform natural language processing on user written reviews to better inform the recommender system of user preferences. We will assess the accuracy of the Recommender System with and without additional textual information contained in user reviews, and evaluate the sensitivity of our Recommender System by varying the number of reviews by user, and number of reviews per product. 
 \end{abstract}
-
 
 
 \section{Introduction}
 Modern consumers are inundated with a plethora of choices. Electronic retailers and content providers offer a huge selection of products, with unprecedented opportunities to meet users having a variety of special needs and tastes. Matching consumers with most appropriate products is key to enhancing user satisfaction and loyalty. For this reason, many online retailers have become interested in recommender systems, which analyze patterns of user interest in products. This allows them to provide personalized recommendations that suit each and every user's taste.
 
-Personalized recommendation can add another dimension to a user's online shopping experience. Giants like Amazon.com, Netflix and other e-commerce leaders have made recommender systems a salient part of their websites. Recommender systems can be treated as a form of information filter. In general, a recommender system needs to complete two tasks - First, we use a recommendation algorithm and the user's history logs to predict item ratings, which is not marked by the user before. Second, we generate a list of recommendation items for the user on the basis of the first task mentioned before, and also on a number of other factors like diversity, novelty, credits and so on. For every recommendation system, the first period is key and the core technology is the recommendation algorithm.
+Personalized recommendation can add another dimension to a user's online shopping experience. Giants like Amazon.com, Netflix and other e-commerce leaders have made recommender systems a salient part of their websites. Recommender systems can be treated as a form of information filter. In general, a recommender system needs to complete two tasks \cite{RCHB2010}- First, we use a recommendation algorithm and the user's history logs to predict item ratings\cite{AUIRM}, which is not marked by the user before. Second \cite{WBKNN2013}, we generate a list of recommendation items for the user on the basis of the first task mentioned before, and also on a number of other factors like diversity, novelty, credits and so on. For every recommendation system, the first period is key and the core technology is the recommendation algorithm.
 
 \subsection{Collaborative Filtering}
-Recommender systems are based on one of two strategies, namely - content filtering and collaborative filtering (CF). The content filtering approach creates a profile for each user or product, in order to characterize its nature. These profiles allow programs to associate users with matching products. However, this strategy requires gathering external information that might not be available or easy to collect. On the other hand, collaborative filtering relies on past user behavior i.e. previous transactions or product ratings without requiring the creation of explicit profiles. Collaborative filtering analyzes relationships between users and interdependencies between products, to identify new user-item associations. The goal of collaborative filtering is to suggest the new items to users by predicting a score for an item (usually $0/1$ or $1-5$, etc) for a particular user based on his consume log of some old items as well as the log from other users with similar tastes.
+Recommender systems are based on one of two strategies \cite{ATTPaper2009}, namely - content filtering and collaborative filtering (CF). The content filtering approach creates a profile for each user or product, in order to characterize its nature. These profiles allow programs to associate users with matching products. However, this strategy requires gathering external information that might not be available or easy to collect. On the other hand, collaborative filtering relies on past user behavior i.e. previous transactions or product ratings without requiring the creation of explicit profiles. Collaborative filtering analyzes relationships between users and interdependencies between products, to identify new user-item associations. The goal of collaborative filtering is to suggest the new items to users by predicting a score for an item (usually $0/1$ or $1-5$, etc) for a particular user based on his consume log of some old items as well as the log from other users with similar tastes.
 
 Memory-based CF has two models - one is user-based and the other is item/product-based. The basic idea of user-based CF can be explained using the following example - suppose user A likes an item a, user B likes items a, b, c and user C likes items a and c. So user A, B and C are similar and item c is recommended to user A. item-based CF calculates the similarity between items with all the history of the user's preference data, and thus the user is recommended with similar items. Model-based CF are developed using data mining, machine learning algorithms to find patterns based on training data which are used to make predictions for real data. Most of the recommender system algorithms have been derived from collaborative filtering. The biggest advantage of CF is that it is domain free. However, it suffers from cold start problems, due to its inability to address the system's new products and users. In this aspect, content filtering is superior.
 
 \subsection{ Matrix Factorization }
-The primary areas of collaborative filtering are the neighborhood methods and latent factor models. Neighborhood methods are centered on computing the relationships between items or, alternatively, between users. The item oriented approach evaluates a user's preference for an oriented item based on ratings of neighborhood items by the same user. A product's neighborhood are other products that tend to get similar ratings when rated by the same user. Latent factor models are an alternative approach that tried to explain the ratings by characterizing both items and users on, say 20 to 100 factors inferred from the ratings patterns. Most of the successful realizations of latent factor models are based on matrix factorization (MF).
+The primary areas of collaborative filtering \cite{ATTPaper2009} are the neighborhood methods and latent factor models. Neighborhood methods are centered on computing the relationships between items or, alternatively, between users. The item oriented approach evaluates a user's preference for an oriented item based on ratings of neighborhood items by the same user. A product's neighborhood are other products that tend to get similar ratings when rated by the same user. Latent factor models are an alternative approach that tried to explain the ratings by characterizing both items and users on, say 20 to 100 factors inferred from the ratings patterns. Most of the successful realizations of latent factor models are based on matrix factorization (MF).
 
 The MF technique is gradually applied to personalized recommendation algorithm. It does a global optimization on object, so MF performs better than neighborhood methods in Root Mean Square Error (RMSE). In the basic form, MF characterizes both items and users by vectors of factors inferred from item rating patterns. High correspondence between item and user factors leads to a recommendation. One strength of MF is that it allows incorporation of additional information. When explicit feedback is not available, recommender systems can infer user preferences using implicit feedback, which indirectly reflects opinion by observing user behavior including purchase history, browsing history, search patterns, or even mouse movements. Implicit feedback usually denotes the presence or absence of an event, so it is typically represented by a densely filled matrix. However, ideally the MF approach will always prefer explicit feedback than implicit.
 
@@ -70,7 +69,7 @@ EQUATION 2
 Here, $\kappa$ is the set of the ($u$,$i$) pairs for which $r_{ui}$ is known (training set). The system learns the model by fitting the previously observed ratings. However, the goal is to generalize those previous ratings in a way that predicts future, unknown ratings. Thus, the system should avoid overfitting the observed data by regularizing the learned parameters, whose magnitudes are penalized. The constant $\lambda$ controls the extent of regularization and is usually determined by cross-validation.
 
 \subsection{ Alternating Least Squares }
-There are two approaches to minimize equation2  stochastic gradient descent and alternating least squares (ALS). Both $q_i$ and $p_u$ are unknowns, and equation2 is not convex. By fixing one of the unknowns, the optimization problem becomes quadratic and can be solved optimally. Thus the ALS techniques rotate between fixing the $q_i$'s and fixing the $p_u$'s. When all $p_u$'s are fixed, the system recomputes the $q_i$'s by solving a least-squares problem, and next when all the $q_i$'s are fixed, the system recomputes the $p_u$'s by solving the least squares problem. This ensures that each step decreases equation2 until convergence.
+There are two approaches \cite{ATTPaper2009} to minimize equation2  stochastic gradient descent and alternating least squares (ALS). Both $q_i$ and $p_u$ are unknowns, and equation2 is not convex. By fixing one of the unknowns, the optimization problem becomes quadratic and can be solved optimally. Thus the ALS techniques rotate between fixing the $q_i$'s and fixing the $p_u$'s. When all $p_u$'s are fixed, the system recomputes the $q_i$'s by solving a least-squares problem, and next when all the $q_i$'s are fixed, the system recomputes the $p_u$'s by solving the least squares problem. This ensures that each step decreases equation2 until convergence.
 
 In general, stochastic gradient descent is easier and much faster than ALS. However, ALS is more favorable than stochastic gradient descent in at least two cases ? First, when the system computes $q_i$ and $p_u$ independently of the other user factors respectively, the system can utilize massive parallelization of the algorithm. Next, when the system is centered on implicit data, because the training set cannot be considered sparse, and looping over each single training case as gradient descent does, would not be practical.
 
@@ -85,73 +84,45 @@ The suggested movies are determined by highly rated products as rated by similar
 
  To enhance the performance of our recommender system, we will also incorporate additional information derived from text reviews written by users using Natural Language Processing, to develop a more accurate metric of user similarity. We will evaluate the performance of our recommender system both with and without the incorporation of additional textual information using NLP and compare the results.
 
-\section{Methodology}
 
---Insert Methodology here-- 
+\section{Methodology}
 
 \subsection{Base Recommender System}
 
 \subsection{Natural Language Processing}
-User reviews generally come with a text review. The data that we are dealing with comes with two sections of text reviews: the review summary and the text review (detailed). While the reviewers provide a numerical review, which is what we base our base recommender system on, it is sufficiently clear that the review texts and summaries contain more information that can be leveraged to give a finer grained score to each review. Thinking intuitively, when a person looks at a movie to decide on whether or not to watch it, the recommender that is built on review scores gives some information but it misses out on the details that is contained in the text reviews. The goal behind using NLP in our system is so that we can somehow use this information in the review summary and text to fine-tune the review scores that go into the recommender system. For instance for two reviews that have the same initial rating of 4, one review summary and review text might be very positive, while the other one might be mediocre. We want a movie recommender system that is able to mine the information in the reviews and give a recommendation that is appreciative of this extra information.  While there are many recommendation systems that exist out there, a novelty of this recommendation system is that it finds a way to incorporate the sentiment information in the reviews that others don?t take into consideration. A thing to be noted however is that although we use NLP to fine-tune the recommender, the results are not readily testable since we will ultimately compare against the numeric reviews in the test set, thus we don?t expect the NLP system to do better than the base system in that respect. However we do fine tune our NLP system and the combination algorithms such that the overall test error is minimized.  
+
+Most eCommerce retailers provide users an option to leave a review for products they have purchased. These reviews not only provide future users an overview of an item, but they also contain valuable information that the retailer can use. User reviews generally come with a text review. The data that we deal with comes with two sections of text reviews: the review summary and the text review (detailed). While the users provide a numerical review, which is what we base our main recommender system on, it is sufficiently clear that the review texts and summaries also contain some valuable information. We can  leverage this information to give a finer grained score to each review. 
+
+Thinking intuitively, when a person looks at a movie to decide on whether or not to watch it, the recommender that is built on review scores gives some information but it misses out on the details that is contained in the text reviews. The goal behind using NLP in our system is so that we can somehow use this information in the review summary and text to fine-tune the review scores that go into the recommender system. For instance for two reviews that have the same initial rating of 4, one review summary and review text might be very positive, while the other one might be mediocre. We want a movie recommender system that is able to mine the information in the reviews and give a recommendation that is appreciative of this extra information.  
+
+While there are many recommendation systems that exist out there, a novelty of this recommendation system is that it finds a way to incorporate the sentiment information in the reviews that others don't take into consideration. A thing to be noted however is that although we use NLP to fine-tune the recommender, the results are not readily testable since we will ultimately compare against the numeric reviews in the test set, thus we don't expect the NLP system to do better than the base system in that respect. However we do fine tune our NLP system and the combination algorithms such that the overall test error is minimized.  
  
-\textbf{Stanford NLP.} The first method that we tried was the sentiment Analyzer that is provided by Stanford NLP lab \cite(StanfordPaper). This sentiment analyzer utilizes a 'Semantic Treebank' that includes fine grained sentiment labels for 215,154 phrases in the parse trees of 11, 855 sentences. This technique claims to increase the accuracy of predicting-fine grained sentiment labels for all phrases to 80.7 percent. This technique also successfully detects negation in a sentence which is very important for sentiment analysis on user reviews. After compilation of the NLP files, we get a 'pipeline' which takes a single sentence at a time and gives back a score that is between 0 and 4 which is convenient because we could scale this and combine it directly with our base recommender system. We built a program that would first get a sentiment value for the Review Summary section, then it would parse the Review Text section into individual sentences, get a sentiment value for each of those sections and then combine them and normalize it. We gave a slightly higher score to the Review Summary section than the review score section based on the formula:
+\textbf{Stanford NLP.} The first method that we tried was the sentiment Analyzer that is provided by Stanford NLP lab \cite{StanfordPaper}. This sentiment analyzer utilizes a 'Semantic Treebank' that includes fine grained sentiment labels for 215,154 phrases in the parse trees of 11, 855 sentences. This technique claims to increase the accuracy of predicting-fine grained sentiment labels for all phrases to 80.7 percent. This technique also successfully detects negation in a sentence which is very important for sentiment analysis on user reviews. After compilation of the NLP files, we get a 'pipeline' which takes a single sentence at a time and gives back a score that is between 0 and 4 which is convenient because we could scale this and combine it directly with our base recommender system. We built a program that would first get a sentiment value for the Review Summary section, then it would parse the Review Text section into individual sentences, get a sentiment value for each of those sections and then combine them and normalize it. We gave a slightly higher score to the Review Summary section than the review score section based on the formula:
 
 java -cp "*" -Xmx2g edu.stanford.nlp.pipeline.StanfordCoreNLP -annotators tokenize,ssplit,pos,lemma,ner,parse,dcoref -file input.txt
 
--- (1.2 * Review Summary Score  + Review Score) /2.2 
+$(1.2 * Review Summary Score  + Review Score) /2.2$
 
 Although this approach seems to give us good results, we had to abandon it ultimately because it was slow and it could not give us results in a timely manner. The system took about 1 second to give a score back for each sentence review. We were processing about 600,000 reviews, which roughly translates to 6 million sentences, which amounts to about 70 days of runtime. On top of that there was the overhead of combination and some isolated cases where the sentence spanned more than 60 words which exponentially increased the processing time. 
 
-\textbf{Python Blob.} The next approach we utilized for natural language processing was TextBlob \cite{reference}. It provides a simple API for diving into common natural language processing (NLP) tasks such as part-of-speech tagging, noun phrase extraction, sentiment analysis, classification, translation, and more. Then we used the sentiment analysis module of this to receive a sentiment score between -1 and 1. The module returned a tuple of the form Sentiment(polarity,subjectivity). The polarity score is a float within the range [-1.0, 1.0]. The subjectivity is a float within the range [0.0, 1.0] where 0.0 is very objective and 1.0 is very subjective. In did not utilize the objectivity score in our NLP processing primarily because we did not want to differentiate between a negative reviews that was very objective vs. one that was subjective. (Example. The movie was awful vs. I felt the movie was awful).  However, after going through several movie reviews, we realized that a good portion of the reviews were plot descriptions and not actual sentiments on the movie. In this light, giving more weight to reviews with higher subjectivity might increase the effectiveness of the sentiment analyzer. Due to time constraints, we were not able to run a detailed test on this aspect and had to set this aside for future work. 
-As compared to the Stanford NLP processer, the textBlob algorithm was very fast. We used a similar method to parse the Review Summary vs. the Review Text and fed it to the textBlob. We also noticed that this NLP system was able to handle entire paragraphs at a time, which was one of the reasons it was much faster. This algorithm was able to compute the entire training set of close to 600,000 reviews in less than 29 minutes. The result of the analysis was a ?sentiment? score of between -1 and 1. We used the following conversion method to convert this range to a range of 1 to 5 
---formula? Score (1-5 ) = 2*score + 3 
-Then we use the following formula for combination to the base NLP. Explain the significance of Alpha. 
---formula
+\textbf{Python Blob.} The next approach we utilized for natural language processing was TextBlob \cite{TextBlob}. It provides a simple API for diving into common natural language processing (NLP) tasks such as part-of-speech tagging, noun phrase extraction, sentiment analysis, classification, translation, and more. Then we used the sentiment analysis module of this to receive a sentiment score between -1 and 1. The module returned a tuple of the form Sentiment(polarity,subjectivity). The polarity score is a float within the range [-1.0, 1.0]. The subjectivity is a float within the range [0.0, 1.0] where 0.0 is very objective and 1.0 is very subjective. In did not utilize the objectivity score in our NLP processing primarily because we did not want to differentiate between a negative reviews that was very objective vs. one that was subjective. (Example. The movie was awful vs. I felt the movie was awful).  However, after going through several movie reviews, we realized that a good portion of the reviews were plot descriptions and not actual sentiments on the movie. In this light, giving more weight to reviews with higher subjectivity might increase the effectiveness of the sentiment analyzer. Due to time constraints, we were not able to run a detailed test on this aspect and had to set this aside for future work. 
+
+As compared to the Stanford NLP processor, the textBlob algorithm was very fast. We used a similar method to parse the Review Summary vs. the Review Text and fed it to the textBlob. We also noticed that this NLP system was able to handle entire paragraphs at a time, which was one of the reasons it was much faster. This algorithm was able to compute the entire training set of close to 600,000 reviews in less than 29 minutes. The result of the analysis was a sentiment score of between -1 and 1. We used the following conversion method to convert this range to a range of 1 to 5 using the forumla
+
+$Score (1-5 ) = 2*score + 3$
+
 
 \textbf{Combination.}We noticed that the sentiment score that was returned was somewhat positively skewed and thus shifted the overall scores upwards instead of just providing a means to differentiate between reviews with the same initial score, thus we performed a simple mean shift to the NLP scores (shifted the mean to the integer scores). This made a lot of intuitive sense and also helped us reduce the testing error after we utilized the NLP system. 
--insert diagrams for the mean shift. 
+
+--insert diagrams for the mean shift. 
 
 We then used this shifted NLP score and combined based on the following formula. 
 
+$BR + \alpha((AdNLP - BaseNLP)/4) $
 
-The --alpha here is the limiting factor which essentially limits how big of an adjustment that the NLP is allowed to have. For a value of 1, the NLP portion will be able to adjust the base score by at most 1 numeric score i.e. a review of 2 with the highest possible review score will be adjusted to a new score of 3. We performed a lot of tests on what would be the optimum value of the --alpha and settled on a value of 0.5. Since the reviews numeric score and the sentiment score didn't differ by such a huge degree in most cases, which meant that most of the adjustments stayed well below 0.5.  
+The $\alpha$ here is the limiting factor which essentially limits how big of an adjustment that the NLP is allowed to have. For a value of 1, the NLP portion will be able to adjust the base score by at most 1 numeric score i.e. a review of 2 with the highest possible review score will be adjusted to a new score of 3. We performed a lot of tests on what would be the optimum value of the --alpha and settled on a value of 0.5. Since the reviews numeric score and the sentiment score didn't differ by such a huge degree in most cases, which meant that most of the adjustments stayed well below 0.5.  
 
-
-
-References. Add to 
-
-http://textblob.readthedocs.org/en/dev/
-
-(1.2 * Review Summary Score  + Review Score ) /2.2 
-
-Although this approach seems to give us good results, we had to abandon it because it was very slow as it took about 1 second to give a score back for each review. We were processing 600,000 reviews which roughly translates to 6 million sentences which 
-
-The next approach we utilized for natural language processing was --textblob-- \cite{reference}. This is a python library that utilizes --techniques-- to -- information regarding this--. The results are obtained from a scale of -1 to 1. 
-
-We convert this range into another range --insert conversation formula-- to go to a range of 1-5. Then we use the following formula -- insert formula -- for combination to the base NLP. Explain the significance of Alpha. 
-
-
-
-\begin{enumerate}
-\item Stanford NLP Sentiment Analysis \cite{Birdetal2001}
-\item
-\end{enumerate}
-\subsection{Combination}
-
-The idea of combination of NLP scores to the base recommender score required a lot of thinking. 
-
---how we fill in the review and feed the implicit recommeder -- 
-
-At first we used the combination algorithm stated above . -- but we noticed that the ratings from the system are positively skewed--. We then adjusted the distribution of ratings around the rating it predicts and allowed for at most 0.5 of difference in the 
-
-Although we know definitely that we are adding information to the score we output because we are --successfully -- incorporating NLP from the text reviews and the text summaries, we don't have a way to objectively testing the results. If we test the persormm. -- against, base, it will be worse --- against the base+NLP it won't be a measure of NLP correctness 
-
-Thus we test it against base+NLP and report our results as another way to provide recommendations to users based on , however we can't test it against the base, we test it against the base + NLP. Our results provide nothing more than an added granularity in the results 
-
-Then we test it again
-
-
-Ideas for future work. 
+$(1.2 * Review Summary Score  + Review Score ) /2.2 $
 
 \section{Results}
 
@@ -166,17 +137,4 @@ Ideas for future work.
 
 \bibliographystyle{plain}
 \bibliography{firstDraft}	
-
-\begin{enumerate}
-\item \href{http://nlp.stanford.edu/~socherr/EMNLP2013_RNTN.pdf}{Recursive Deep Models for Semantic Compositionality
-Over a Sentiment Treebank}
-\end{enumerate}
-
-
-
-\section {TTD - Remove me}
-\begin{enumerate}
-\item Fix References and how to refer to the references etc. 
-\end{enumerate}
-
 \end{document}  
