@@ -29,27 +29,28 @@ with open(f_in,'r') as f:
         elif lnum == 2:
             title=line.split(': ',3)
             movie=title[2] 
-            if movie not in movie_d:
-                movie_d[movie]=productid  
-   
+            if productid not in movie_d:
+                movie_d[productid]=movie
+
         elif lnum == 4:
             user = line.split(': ',1)[1].strip()
 
         elif lnum == 5:
             profilename=line.split(': ',1)[1].strip()
-            if profilename not in user_d:
-                user_d[profilename]=user   
+            if user not in  user_d:
+                user_d[user]=profilename
+
 	j = j+1
  
 items_writer = csv.writer(open('movie_names.csv', 'wb'))
 for key, value in movie_d.items():
-   if key is not 'unknown' and value is not 'unknown':
-       items_writer.writerow([value, key])
+   #if key is not 'unknown' and value is not 'unknown':
+    items_writer.writerow([key, value])
 
 users_writer = csv.writer(open('user_names.csv', 'wb'))
 for key, value in user_d.items():
-   if key is not 'unknown' and value is not 'unknown':
-       users_writer.writerow([value, key])
+   #if key is not 'unknown' and value is not 'unknown':
+    users_writer.writerow([key, value])
 
            
 #fout.close()

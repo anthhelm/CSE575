@@ -4,10 +4,12 @@ import csv
 #combine dicts
 
 def combine(int_dict,names_dict,writer):
+    i=1
     for each in int_dict.keys():
         if each in names_dict:
             writer.writerow([int_dict[each],names_dict[each]])
-
+            i+=1
+    print i
 
 
 
