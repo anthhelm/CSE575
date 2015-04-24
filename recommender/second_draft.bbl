@@ -1,0 +1,27 @@
+\begin{thebibliography}{1}
+
+\bibitem{WBKNN2013}
+Chuunhong~Zhang. Bin~Wang, Qing~Liao.
+\newblock Weight based knn recommender system., 2013.
+
+\bibitem{TextBlob}
+Yifan Hu, Yehuda Koren, and Chris Volinsky.
+\newblock Collaborative filtering for implicit feedback datasets.
+\newblock {\em IEE}, pages 263--272, 2008.
+
+\bibitem{RecSys}
+Jure~Leskovec Julian~McAuley.
+\newblock Hidden factors and hidden topics: Understanding rating dimensions
+  with review text, 2013.
+
+\bibitem{ATTPaper2009}
+Chris~Kolinsky. Yehudi~Koren, Robert~Bell.
+\newblock Techniques for recommender systems.
+\newblock {\em ICDM}, page~2, 2008.
+
+\bibitem{Yeung:2010:Online}
+Albert Yueng.
+\newblock Matrix factorization: A simple tutorial and implementation in python,
+  June 2010.
+
+\end{thebibliography}
